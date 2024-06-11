@@ -139,7 +139,7 @@ const sendFailedOrderToAdmin = (
 
     const mailOptions = {
         from: process.env.EMAIL,
-        to: "uahomorejoice@gmail.com",
+        to: "info@ishop.black",
         subject: subject,
         html: `
        <!DOCTYPE html>
