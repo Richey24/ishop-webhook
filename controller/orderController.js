@@ -220,6 +220,52 @@ const orderController = async (req, res) => {
                     }
                 }
 
+            } else if (brand.x_vision_model) {
+                const lineItems = await Promise.all(theOrder.map(async (item) => {
+                    const product = await getProductDetails(item.product_template_id[0])
+                    const pro = product[0]
+                    return {
+                        model_code: pro.x_vision_model,
+                        quantity: item.product_uom_qty
+                    }
+                }))
+
+                const address = await getAddress(order?.partner_id[0], order?.partner_shipping_id[0])
+                const countryCode = address.state_id[1].substring(address.state_id[1].indexOf("(") + 1, address.state_id[1].lastIndexOf(")"))
+
+                const body = {
+                    key: "51yYB65DUPXJpYCdTVxuLJt750yK3oNX8AeRIwxRPgQ.",
+                    payment_method: "Credit Card",
+                    shipping: "US USPS",
+                    currency: "USD",
+                    products: lineItems,
+                    address: {
+                        first_name: address.name.split(" ")[0],
+                        last_name: address.name.split(" ")[1],
+                        street: address.street,
+                        zip: address.zip,
+                        city: address.city,
+                        state: address.state_id[1],
+                        telephone: address.phone,
+                        country_iso2: countryCode,
+                        socket: countryCode
+                    }
+                }
+
+                axios.post("https://secure.chinavasion.com/api/createOrder.php", body).then(async () => {
+                    console.log("Order created on chinavision")
+                    await axios.put(
+                        `https://market-server.azurewebsites.net/api/orders/status`,
+                        {
+                            orderId: session.metadata.orderId,
+                            newStatus: "sale"
+                        }
+                    );
+                }).catch(() => {
+                    sendFailedOrderToAdmin(session.metadata.orderId, "GVS", session.payment_intent)
+                    sendFailedOrderToUser(session.metadata.orderId, address.email)
+                })
+
             }
 
             await axios.put(
