@@ -234,7 +234,7 @@ const orderController = async (req, res) => {
                 const countryCode = address.state_id[1].substring(address.state_id[1].indexOf("(") + 1, address.state_id[1].lastIndexOf(")"))
 
                 const body = {
-                    key: "51yYB65DUPXJpYCdTVxuLJt750yK3oNX8AeRIwxRPgQ.",
+                    key: "Zs6U7tiYqvCFL2BhcCPmNF6EvH4xphbLkPUB6lbs8i8.",
                     payment_method: "Credit Card",
                     shipping: "US USPS",
                     currency: "USD",
