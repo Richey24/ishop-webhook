@@ -112,7 +112,9 @@ const getProductDetails = async (id) => {
             "x_featured_product",
             "x_total_available_qty",
             "x_aliexpress_id",
-            "x_aliexpress_variant_id"
+            "x_aliexpress_variant_id",
+            "x_vision_id",
+            "x_vision_model"
         ],
     ]);
     return productData

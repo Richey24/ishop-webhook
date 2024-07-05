@@ -245,22 +245,14 @@ const orderController = async (req, res) => {
                         street: address.street,
                         zip: address.zip,
                         city: address.city,
-                        state: address.state_id[1],
+                        state: address.state_id[1]?.split(" ")[0],
                         telephone: address.phone,
                         country_iso2: countryCode,
                         socket: countryCode
                     }
                 }
-
-                axios.post("https://secure.chinavasion.com/api/createOrder.php", body).then(async () => {
+                axios.post("https://secure.chinavasion.com/api/createOrder.php", body).then(async (data) => {
                     console.log("Order created on chinavision")
-                    await axios.put(
-                        `https://market-server.azurewebsites.net/api/orders/status`,
-                        {
-                            orderId: session.metadata.orderId,
-                            newStatus: "sale"
-                        }
-                    );
                 }).catch(() => {
                     sendFailedOrderToAdmin(session.metadata.orderId, "GVS", session.payment_intent)
                     sendFailedOrderToUser(session.metadata.orderId, address.email)
