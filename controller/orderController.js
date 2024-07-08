@@ -235,7 +235,7 @@ const orderController = async (req, res) => {
 
                 const body = {
                     key: "Zs6U7tiYqvCFL2BhcCPmNF6EvH4xphbLkPUB6lbs8i8.",
-                    payment_method: "Credit Card",
+                    payment_method: "PayPal",
                     shipping: "US USPS",
                     currency: "USD",
                     products: lineItems,
