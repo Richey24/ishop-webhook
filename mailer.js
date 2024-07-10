@@ -1,23 +1,23 @@
 const nodemailer = require("nodemailer");
 
 const sendAdvertisementNotificationEmail = (
-    email,
-    userName,
-    advertisementDetails,
-    advertisementLink,
+     email,
+     userName,
+     advertisementDetails,
+     advertisementLink,
 ) => {
-    const transporter = nodemailer.createTransport({
-        host: "smtp.office365.com",
-        port: 587,
-        secure: false,
-        auth: {
-            user: process.env.EMAIL,
-            pass: process.env.PASSWORD,
-        },
-    });
+     const transporter = nodemailer.createTransport({
+          host: "smtp.office365.com",
+          port: 587,
+          secure: false,
+          auth: {
+               user: process.env.EMAIL,
+               pass: process.env.PASSWORD,
+          },
+     });
 
-    const subject = `New Advertisement Alert - Explore Now!`;
-    const introMessage = `
+     const subject = `New Advertisement Alert - Explore Now!`;
+     const introMessage = `
   <p>Dear ${userName},</p>
   <p>We're thrilled to inform you about a new advertisement from one of our vendors. Don't miss out on the latest offers!</p>
   <p><strong>Advertisement Details:</strong></p>
@@ -29,11 +29,11 @@ const sendAdvertisementNotificationEmail = (
   <a class="cta-button" href="${advertisementLink}">Explore Now</a>
   `;
 
-    const mailOptions = {
-        from: process.env.EMAIL,
-        to: email,
-        subject: subject,
-        html: `
+     const mailOptions = {
+          from: process.env.EMAIL,
+          to: email,
+          subject: subject,
+          html: `
        <!DOCTYPE html>
        <html>
        <head>
@@ -105,43 +105,43 @@ const sendAdvertisementNotificationEmail = (
        </body>
        </html>       
        `,
-    };
+     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("Advertisement Notification Email sent: " + info.response);
-        }
-    });
+     transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+               console.log(error);
+          } else {
+               console.log("Advertisement Notification Email sent: " + info.response);
+          }
+     });
 };
 
 const sendFailedOrderToAdmin = (
-    id,
-    site,
-    payID,
+     id,
+     site,
+     payID,
 ) => {
-    const transporter = nodemailer.createTransport({
-        host: "smtp.office365.com",
-        port: 587,
-        secure: false,
-        auth: {
-            user: process.env.EMAIL,
-            pass: process.env.PASSWORD,
-        },
-    });
+     const transporter = nodemailer.createTransport({
+          host: "smtp.office365.com",
+          port: 587,
+          secure: false,
+          auth: {
+               user: process.env.EMAIL,
+               pass: process.env.PASSWORD,
+          },
+     });
 
-    const subject = `Failed Order On ${site}`;
-    const introMessage = `
+     const subject = `Failed Order On ${site}`;
+     const introMessage = `
   <p>An order with id ${id} sent to ${site} failed</p>
   <p>You can refund the user on stripe using the transaction ID - ${payID}</p>
   `;
 
-    const mailOptions = {
-        from: process.env.EMAIL,
-        to: "info@ishop.black",
-        subject: subject,
-        html: `
+     const mailOptions = {
+          from: process.env.EMAIL,
+          to: "info@ishop.black",
+          subject: subject,
+          html: `
        <!DOCTYPE html>
        <html>
        <head>
@@ -213,42 +213,42 @@ const sendFailedOrderToAdmin = (
        </body>
        </html>       
        `,
-    };
+     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("Failed Order sent to Admin: " + info.response);
-        }
-    });
+     transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+               console.log(error);
+          } else {
+               console.log("Failed Order sent to Admin: " + info.response);
+          }
+     });
 };
 
 const sendFailedOrderToUser = (
-    id,
-    email
+     id,
+     email
 ) => {
-    const transporter = nodemailer.createTransport({
-        host: "smtp.office365.com",
-        port: 587,
-        secure: false,
-        auth: {
-            user: process.env.EMAIL,
-            pass: process.env.PASSWORD,
-        },
-    });
+     const transporter = nodemailer.createTransport({
+          host: "smtp.office365.com",
+          port: 587,
+          secure: false,
+          auth: {
+               user: process.env.EMAIL,
+               pass: process.env.PASSWORD,
+          },
+     });
 
-    const subject = `Your Order Was Not Successfull`;
-    const introMessage = `
+     const subject = `Your Order Was Not Successfull`;
+     const introMessage = `
   <p>Your order with id ${id} failed</p>
   <p>You will be refunded the exact amount</p>
   `;
 
-    const mailOptions = {
-        from: process.env.EMAIL,
-        to: email,
-        subject: subject,
-        html: `
+     const mailOptions = {
+          from: process.env.EMAIL,
+          to: email,
+          subject: subject,
+          html: `
        <!DOCTYPE html>
        <html>
        <head>
@@ -320,20 +320,121 @@ const sendFailedOrderToUser = (
        </body>
        </html>       
        `,
-    };
+     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("Failed Order sent to Admin: " + info.response);
-        }
-    });
+     transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+               console.log(error);
+          } else {
+               console.log("Failed Order sent to Admin: " + info.response);
+          }
+     });
+};
+
+
+const sendSubscriptionNotification = (
+     userEmail,
+     userName,
+     domain,
+) => {
+     const transporter = nodemailer.createTransport({
+          host: "smtp.office365.com",
+          port: 587,
+          secure: false,
+          auth: {
+               user: process.env.EMAIL,
+               pass: process.env.PASSWORD,
+          },
+     });
+
+     const subject = "New Subscriber Notification";
+
+     const mailOptions = {
+          from: process.env.EMAIL,
+          to: "info@ishop.black",
+          subject: subject,
+          html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+          body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            line-height: 1.6;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+          }
+          .header {
+            text-align: center;
+            margin-bottom: 20px;
+          }
+          .message {
+            margin-bottom: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+          }
+          .highlight {
+            font-weight: bold;
+          }
+          .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+          }
+          .logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 200px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <img class="logo" src="https://cdn.jsdelivr.net/gh/Richey24/imarket-cdn/src/assets/images/logo.png" alt="Company Logo">
+            <h1 style="color: #333333;">New Paid Subscriber</h1>
+          </div>
+          <div class="message">
+            <p>Hey I.B,</p>
+            <p>A new user has subscribed with the following details:</p>
+            <ul>
+              <li><span class="highlight">Email:</span> ${userEmail}</li>
+              <li><span class="highlight">Name:</span> ${userName}</li>
+              <li><span class="highlight">Domain:</span> ${domain}</li>
+            </ul>
+            <p>Please reach out to the new subscriber to welcome them and offer any assistance they may need.</p>
+          </div>
+          <div class="footer">
+            <p style="color: #777777;">This email was sent by IMarketplace, LLC.</p>
+          </div>
+        </div>
+      </body>
+      </html>       
+    `,
+     };
+
+     transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+               console.log(error);
+          } else {
+               console.log("sub Email sent: " + info.response);
+               // do something useful
+          }
+     });
 };
 
 
 module.exports = {
-    sendAdvertisementNotificationEmail,
-    sendFailedOrderToAdmin,
-    sendFailedOrderToUser
+     sendAdvertisementNotificationEmail,
+     sendFailedOrderToAdmin,
+     sendFailedOrderToUser,
+     sendSubscriptionNotification
 }

@@ -1,7 +1,9 @@
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 const User = require("../model/User");
 const Logger = require("../model/Logger");
-const { deleteCompany } = require("../utils")
+const { deleteCompany } = require("../utils");
+const Company = require("../model/Company");
+const { sendSubscriptionNotification } = require("../mailer");
 
 
 const subscribeController = async (req, res) => {
@@ -39,6 +41,8 @@ const subscribeController = async (req, res) => {
                         },
                         { new: true },
                     );
+                    const company = await Company.findOne({ user_id: user._id });
+                    sendSubscriptionNotification(user.email, company?.company_name || "Not available", company?.subdomain || "Not created")
                     await Logger.create({
                         userID: user._id,
                         eventType: "user subscribed",
