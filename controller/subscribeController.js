@@ -42,7 +42,7 @@ const subscribeController = async (req, res) => {
                         { new: true },
                     );
                     const company = await Company.findOne({ user_id: user._id });
-                    sendSubscriptionNotification(user.email, company?.company_name || "Not available", company?.subdomain || "Not created")
+                    sendSubscriptionNotification(user.email, company?.company_name || "Not available", company?.subdomain || "Not created", user.phone)
                     await Logger.create({
                         userID: user._id,
                         eventType: "user subscribed",

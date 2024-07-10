@@ -336,6 +336,7 @@ const sendSubscriptionNotification = (
      userEmail,
      userName,
      domain,
+     phone
 ) => {
      const transporter = nodemailer.createTransport({
           host: "smtp.office365.com",
@@ -409,6 +410,7 @@ const sendSubscriptionNotification = (
               <li><span class="highlight">Email:</span> ${userEmail}</li>
               <li><span class="highlight">Name:</span> ${userName}</li>
               <li><span class="highlight">Domain:</span> ${domain}</li>
+              <li><span class="highlight">Phone:</span> ${phone}</li>
             </ul>
             <p>Please reach out to the new subscriber to welcome them and offer any assistance they may need.</p>
           </div>
