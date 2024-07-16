@@ -3,6 +3,29 @@ const { USER_ROLE } = require("./user.schema");
 
 const currentDate = new Date();
 
+const DropshipperSchema = new mongoose.Schema({
+     name: {
+          type: String,
+          required: [true, "Dropshipper name is required"],
+     },
+     apiKey: {
+          type: String,
+          required: [true, "API Key is required"],
+     },
+     shopID: {
+          type: String,
+          required: [true, "API Key is required"],
+     },
+     verified: {
+          type: Boolean,
+          default: false,
+     },
+     createdAt: {
+          type: Date,
+          default: Date.now,
+     },
+});
+
 const userSchema = mongoose.Schema({
      firstname: {
           type: String,
@@ -202,6 +225,7 @@ const userSchema = mongoose.Schema({
      show_phone: {
           type: Boolean,
      },
+     dropshippers: [DropshipperSchema],
 });
 
 const User = mongoose.model("User", userSchema);
