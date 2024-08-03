@@ -117,6 +117,10 @@ const userSchema = mongoose.Schema({
      subscriptionPlan: {
           type: String,
      },
+     premium: {
+          type: Boolean,
+          default: false
+     },
      rated: {
           type: Array,
           default: [],
