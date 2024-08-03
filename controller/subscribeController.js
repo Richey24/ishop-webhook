@@ -50,7 +50,7 @@ const subscribeController = async (req, res) => {
                     });
                     res.status(200).send("successful");
                 }
-
+                break
             case "invoice.payment_succeeded":
                 const invoice = event.data.object;
                 if (invoice.mode !== "subscription") {
@@ -76,7 +76,7 @@ const subscribeController = async (req, res) => {
                     });
                     res.status(200).send("successful");
                 }
-
+                break
             case "customer.subscription.deleted": {
                 const session = event.data.object;
                 const user = await User.findOne({ stripeID: session.customer });
