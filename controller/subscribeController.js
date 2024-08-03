@@ -51,6 +51,32 @@ const subscribeController = async (req, res) => {
                     res.status(200).send("successful");
                 }
 
+            case "invoice.payment_succeeded":
+                const invoice = event.data.object;
+                if (invoice.mode !== "subscription") {
+                    return res.status(200).json("wrong webhook");
+                }
+                if (session.payment_status === "paid") {
+                    const expiryDate =
+                        invoice.metadata.plan === "monthly"
+                            ? new Date(new Date().setMonth(new Date().getMonth() + 1))
+                            : new Date(new Date().setMonth(new Date().getMonth() + 12));
+                    const user = await User.findOneAndUpdate(
+                        { email: invoice.metadata.email },
+                        {
+                            expiryDate: expiryDate,
+                        },
+                        { new: true },
+                    );
+                    const company = await Company.findOne({ user_id: user._id });
+                    sendSubscriptionNotification(user.email, company?.company_name || "Not available", company?.subdomain || "Not created", user.phone)
+                    await Logger.create({
+                        userID: user._id,
+                        eventType: "user subscribtion renewed",
+                    });
+                    res.status(200).send("successful");
+                }
+
             case "customer.subscription.deleted": {
                 const session = event.data.object;
                 const user = await User.findOne({ stripeID: session.customer });
