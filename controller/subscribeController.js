@@ -37,8 +37,7 @@ const subscribeController = async (req, res) => {
                             expiryDate: expiryDate,
                             stripeID: session.customer,
                             subscriptionID: session.subscription,
-                            subscriptionPlan: session.metadata.plan,
-                            premium: session.metadata.premium === "true" ? true : false
+                            subscriptionPlan: session.metadata.premium === "true" ? "PREMIUM-PLAN" : "BASIC-PLAN"
                         },
                         { new: true },
                     );
