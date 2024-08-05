@@ -52,10 +52,7 @@ const subscribeController = async (req, res) => {
                 break
             case "invoice.payment_succeeded":
                 const invoice = event.data.object;
-                if (invoice.mode !== "subscription") {
-                    return res.status(200).json("wrong webhook");
-                }
-                if (session.payment_status === "paid") {
+                if (invoice.status === "paid") {
                     const expiryDate =
                         invoice.metadata.plan === "monthly"
                             ? new Date(new Date().setMonth(new Date().getMonth() + 1))
