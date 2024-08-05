@@ -53,14 +53,14 @@ const subscribeController = async (req, res) => {
             case "invoice.payment_succeeded":
                 const invoice = event.data.object;
                 if (invoice.status === "paid") {
-                    const expiryDate =
-                        invoice.metadata.plan === "monthly"
-                            ? new Date(new Date().setMonth(new Date().getMonth() + 1))
-                            : new Date(new Date().setMonth(new Date().getMonth() + 12));
+                    // const expiryDate =
+                    //     invoice.metadata.plan === "monthly"
+                    //         ? new Date(new Date().setMonth(new Date().getMonth() + 1))
+                    //         : new Date(new Date().setMonth(new Date().getMonth() + 12));
                     const user = await User.findOneAndUpdate(
-                        { email: invoice.metadata.email },
+                        { stripeID: invoice.customer },
                         {
-                            expiryDate: expiryDate,
+                            expiryDate: invoice.lines.data[0].period.end,
                         },
                         { new: true },
                     );
