@@ -537,5 +537,6 @@ module.exports = {
      sendAdvertisementNotificationEmail,
      sendFailedOrderToAdmin,
      sendFailedOrderToUser,
-     sendSubscriptionNotification
+     sendSubscriptionNotification,
+     sendSubscriptionRenewalNotification
 }
