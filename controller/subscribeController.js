@@ -61,6 +61,7 @@ const subscribeController = async (req, res) => {
                         { stripeID: invoice.customer },
                         {
                             expiryDate: invoice.lines.data[0].period.end * 1000,
+                            subscriptionPlan: invoice.lines.data[0].plan.id === process.env.PREMIUM_MONTHLY || invoice.lines.data[0].plan.id === process.env.PREMIUM_YEARLY ? "PREMIUM-PLAN" : "BASIC-PLAN"
                         },
                         { new: true },
                     );
