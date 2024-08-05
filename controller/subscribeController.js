@@ -60,7 +60,7 @@ const subscribeController = async (req, res) => {
                     const user = await User.findOneAndUpdate(
                         { stripeID: invoice.customer },
                         {
-                            expiryDate: invoice.lines.data[0].period.end,
+                            expiryDate: invoice.lines.data[0].period.end * 1000,
                         },
                         { new: true },
                     );
