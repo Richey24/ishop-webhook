@@ -76,15 +76,28 @@ const subscribeController = async (req, res) => {
                 break
             case "customer.subscription.deleted": {
                 const session = event.data.object;
-                const user = await User.findOne({ stripeID: session.customer });
-                if (user) {
-                    await deleteCompany(user.company)
-                    await Logger.create({
-                        userID: user._id,
-                        eventType: "customer.subscription.deleted",
-                    });
-                    res.status(200).send("successful");
-                }
+                const user = await User.findOneAndUpdate({ stripeID: session.customer }, { paid: false, subscriptionPlan: "FREE-TRIAL" }, { new: true });
+                await Logger.create({
+                    userID: user._id,
+                    eventType: "customer.subscription.deleted",
+                });
+                // if (user) {
+                //     await deleteCompany(user.company)
+                // }
+                res.status(200).send("successful");
+            }
+                break
+            case "invoice.payment_failed": {
+                const session = event.data.object;
+                const user = await User.findOneAndUpdate({ stripeID: session.customer }, { subscriptionPlan: "FREE-TRIAL" }, { new: true });
+                await Logger.create({
+                    userID: user._id,
+                    eventType: "invoice.payment_failed",
+                });
+                // if (user) {
+                //     await deleteCompany(user.company)
+                // }
+                res.status(200).send("successful");
             }
                 break;
 
